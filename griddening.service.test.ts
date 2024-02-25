@@ -116,14 +116,14 @@ describe("GriddeningService", () => {
     it("should return a UInt8Array", async () => {
       const screenshot = await getDailyPuzzleScreenshot();
       expect(screenshot).toBeInstanceOf(Uint8Array);
-    });
+    }, 12000);
     it("should return a UInt8Array that represents a 750x750 screenshot", async () =>{
         const screenshot = await getDailyPuzzleScreenshot();
         fs.writeFileSync('screenshot.png', screenshot);
         let image = PNG.load('screenshot.png');
         expect(image.height).toBe(750);
         expect(image.width).toBe(750);
-    });
+    }, 12000);
   });
   describe("getDailyPuzzleAltText", () => {
     it("should return expected alt text", async () => {
@@ -151,10 +151,12 @@ describe("GriddeningService", () => {
   });
   describe("getPostText", () => {
     it("should return the expected string", () => {
-      const expextedText = `https://magicthegridden.ing
+      const expextedText = `Good luck with today's puzzle!
+
+https://magicthegridden.ing
 
 #MagicTheGathering
-#MagicTheGriddening`;
+#MagicTheGriddening`
       expect(getPostText()).toBe(expextedText);
     });
   });

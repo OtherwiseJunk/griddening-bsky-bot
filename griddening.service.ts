@@ -42,7 +42,7 @@ export async function getDailyPuzzleAltText(): Promise<string> {
   return generateAltTextFromGameState(data);
 }
 
-export function generateAltTextFromGameState(game): string{
+export function generateAltTextFromGameState(game: any): string{
   const topRowDescOne = getDescriptionForConstraint(game.gameConstraints[0]);
   const topRowDescTwo = getDescriptionForConstraint(game.gameConstraints[1]);
   const topRowDescThree = getDescriptionForConstraint(game.gameConstraints[2]);
@@ -57,7 +57,7 @@ Side row: ${sideRowDescOne}, ${sideRowDescTwo}, ${sideRowDescThree}
 The board is blank.`
 }
 
-export function getDescriptionForConstraint(constraint){
+export function getDescriptionForConstraint(constraint: any){
   switch(constraint.constraintType){
     case ConstraintType.ManaValue:
       return `${constraint.displayName}`;
@@ -83,7 +83,9 @@ export function getDescriptionForConstraint(constraint){
 }
 
 export function getPostText() {
-  return `https://magicthegridden.ing
+  return `Good luck with today's puzzle!
+
+https://magicthegridden.ing
 
 #MagicTheGathering
 #MagicTheGriddening`;
