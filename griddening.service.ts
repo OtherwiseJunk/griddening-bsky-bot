@@ -22,16 +22,26 @@ export enum ConstraintType {
   __LENGTH
 }
 
-export async function getDailyPuzzleScreenshot(): Promise<Uint8Array> {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto(url);
-  await page.setViewport({ width: 750, height: 750 });
-  await setTimeout(async () =>{
-    await page.screenshot({ path: screenshotPath });
-    await browser.close();
+export function getPuppeteerOptionsByEnv() {
+  return process.env.NODE_ENV !== 'production' ? {} : {
+    executablePath: '/usr/bin/google-chrome-stable',
+    headless: true,
+    ignoreDefaultArgs: ['--disable-extensions'],
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  };
+}
 
-  }, 2000);
+export async function getDailyPuzzleScreenshot(): Promise<Uint8Array> {
+  const puppeteerOptions = getPuppeteerOptionsByEnv();
+  const browser = await puppeteer.launch(puppeteerOptions);
+  const page = await browser.newPage();
+  await page.goto(url, { waitUntil: 'networkidle0' });
+  await page.setViewport({ width: 550, height: 555 });
+  await page.evaluate(() =>{
+    window.scrollTo(0, document.body.scrollHeight);
+  })
+  await page.screenshot({ path: screenshotPath });
+  await browser.close();
 
   return fs.readFileSync(screenshotPath);
 }
