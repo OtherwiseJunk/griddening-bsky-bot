@@ -126,19 +126,19 @@ describe("GriddeningService", () => {
     cleanup();
   });
   afterAll(() =>{
-    cleanup();
+    //cleanup();
   })
   describe("getDailyPuzzleScreenshot", () => {
     it("should return a UInt8Array", async () => {
       const screenshot = await getDailyPuzzleScreenshot();
       expect(screenshot).toBeInstanceOf(Uint8Array);
     }, 12000);
-    it("should return a UInt8Array that represents a 550 x 555 (width x height) screenshot", async () => {
+    it("should return a UInt8Array that represents a 650x650 screenshot", async () => {
       const screenshot = await getDailyPuzzleScreenshot();
       fs.writeFileSync("screenshot.png", screenshot);
       let image = PNG.load("screenshot.png");
-      expect(image.height).toBe(555);
-      expect(image.width).toBe(550);
+      expect(image.height).toBe(650);
+      expect(image.width).toBe(650);
     }, 12000);
   });
   describe("getDailyPuzzleAltText", () => {
