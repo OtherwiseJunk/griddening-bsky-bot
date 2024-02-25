@@ -4,9 +4,10 @@ import {
   getPostText,
   getDescriptionForConstraint,
   generateAltTextFromGameState,
+  getPuppeteerOptionsByEnv,
 } from "./griddening.service";
-import fs from 'fs';
-import PNG from 'png-js'
+import fs from "fs";
+import PNG from "png-js";
 
 const descriptionForConstraintTestCases = [
   {
@@ -101,28 +102,43 @@ const gameStateTestCase = {
     {
       constraintType: 5,
       displayName: "Power 5",
-    }
+    },
   ],
   lifepoints: 9,
   expectedText: `A Magic The Griddening Puzzle.
 The puzzle is a 3x3 grid of inputs, with the following constraints:
 Top row: Mythic (Rarity), Sorcery (Type), Mana Value 3
 Side row: Red (Color), Battle for Zendikar (Set), Power 5
-The board is blank.`
+The board is blank.`,
 };
 
+function cleanup(){
+  if(fs.existsSync("screenshot.png")){
+    fs.unlinkSync("screenshot.png");
+  }
+  if(fs.existsSync("dailyPuzzle.png")){
+    fs.unlinkSync("dailyPuzzle.png");
+  }
+}
+
 describe("GriddeningService", () => {
+  beforeAll(() => {
+    cleanup();
+  });
+  afterAll(() =>{
+    cleanup();
+  })
   describe("getDailyPuzzleScreenshot", () => {
     it("should return a UInt8Array", async () => {
       const screenshot = await getDailyPuzzleScreenshot();
       expect(screenshot).toBeInstanceOf(Uint8Array);
     }, 12000);
-    it("should return a UInt8Array that represents a 750x750 screenshot", async () =>{
-        const screenshot = await getDailyPuzzleScreenshot();
-        fs.writeFileSync('screenshot.png', screenshot);
-        let image = PNG.load('screenshot.png');
-        expect(image.height).toBe(750);
-        expect(image.width).toBe(750);
+    it("should return a UInt8Array that represents a 550 x 555 (width x height) screenshot", async () => {
+      const screenshot = await getDailyPuzzleScreenshot();
+      fs.writeFileSync("screenshot.png", screenshot);
+      let image = PNG.load("screenshot.png");
+      expect(image.height).toBe(555);
+      expect(image.width).toBe(550);
     }, 12000);
   });
   describe("getDailyPuzzleAltText", () => {
@@ -156,8 +172,26 @@ describe("GriddeningService", () => {
 https://magicthegridden.ing
 
 #MagicTheGathering
-#MagicTheGriddening`
+#MagicTheGriddening`;
       expect(getPostText()).toBe(expextedText);
+    });
+  });
+
+  describe("getPuppeteerOptionsByEnv", () => {
+    afterEach(() => {
+      process.env.NODE_ENV = "test";
+    });
+    it("should return production options for productions NODE_ENVs", () => {
+      process.env.NODE_ENV = "production";
+      expect(getPuppeteerOptionsByEnv()).toEqual({
+        executablePath: "/usr/bin/google-chrome-stable",
+        headless: true,
+        ignoreDefaultArgs: ["--disable-extensions"],
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      });
+    });
+    it("should return a blank object for non-production NODE_ENVs", () => {
+      expect(getPuppeteerOptionsByEnv()).toEqual({});
     });
   });
 });
