@@ -88,4 +88,4 @@ postPuzzleInAM();
 postJob.start();
 repostJob.start();
 
-console.log('Started Magic: The Griddening Puzzle Poster');
+console.log(`Started Magic: The Griddening Puzzle Poster in ${process.env.NODE_ENV} mode!`);
