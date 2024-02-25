@@ -133,12 +133,12 @@ describe("GriddeningService", () => {
       const screenshot = await getDailyPuzzleScreenshot();
       expect(screenshot).toBeInstanceOf(Uint8Array);
     }, 12000);
-    it("should return a UInt8Array that represents a 650x650 screenshot", async () => {
+    it("should return a UInt8Array that represents a 800x650 screenshot", async () => {
       const screenshot = await getDailyPuzzleScreenshot();
       fs.writeFileSync("screenshot.png", screenshot);
       let image = PNG.load("screenshot.png");
       expect(image.height).toBe(650);
-      expect(image.width).toBe(650);
+      expect(image.width).toBe(800);
     }, 12000);
   });
   describe("getDailyPuzzleAltText", () => {

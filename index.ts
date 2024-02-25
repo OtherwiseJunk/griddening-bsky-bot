@@ -54,8 +54,8 @@ async function postPuzzleInAM() {
           image: image.data.blob,
           aspectRatio: {
             // a hint to clients
-            width: 750,
-            height: 750,
+            width: 800,
+            height: 650,
           },
         },
       ],
