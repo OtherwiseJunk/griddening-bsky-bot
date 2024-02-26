@@ -184,9 +184,8 @@ https://magicthegridden.ing
     it("should return production options for productions NODE_ENVs", () => {
       process.env.NODE_ENV = "production";
       expect(getPuppeteerOptionsByEnv()).toEqual({
-        executablePath: "/usr/bin/google-chrome-stable",
+        executablePath: "/usr/bin/google-chrome",
         headless: true,
-        ignoreDefaultArgs: ["--disable-extensions"],
         args: ["--no-sandbox", "--disable-setuid-sandbox"],
       });
     });

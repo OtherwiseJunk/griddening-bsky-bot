@@ -26,8 +26,7 @@ export function getPuppeteerOptionsByEnv() {
   return process.env.NODE_ENV !== 'production' ? {} : {
     executablePath: '/usr/bin/google-chrome-stable',
     headless: true,
-    ignoreDefaultArgs: ['--disable-extensions'],
-                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   };
 }
 
@@ -37,7 +36,7 @@ export async function getDailyPuzzleScreenshot(): Promise<Uint8Array> {
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: 'networkidle0' });
   await page.setViewport({ width: 800, height: 650 });
-  await page.addStyleTag({content: '.body{color: white}'})
+  await page.addStyleTag({ content: 'body { color: white; }' });
   await page.evaluate(() =>{
     window.scrollTo(0, document.body.scrollHeight);
   })
