@@ -36,7 +36,7 @@ export async function getDailyPuzzleScreenshot(): Promise<Uint8Array> {
   const browser = await puppeteer.launch(puppeteerOptions);
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: "networkidle0" });
-  await page.setViewport({ width: 800, height: 800 });
+  await page.setViewport({ width: 800, height: 1000 });
   await page.addStyleTag({ content: "body { color: white; }" });
   await page.evaluate(() => {
     window.scrollTo(0, document.body.scrollHeight);
