@@ -2,11 +2,7 @@ import { BskyAgent, RichText } from "@atproto/api";
 import * as dotenv from "dotenv";
 import { CronJob } from "cron";
 import * as process from "process";
-import {
-  getDailyPuzzleAltText,
-  getDailyPuzzleScreenshot,
-  getPostText,
-} from "./griddening.service";
+import { getDailyPuzzleAltText, getDailyPuzzleScreenshot, getPostText } from "./griddening.service";
 
 dotenv.config();
 
@@ -23,7 +19,7 @@ async function postPuzzleInAM() {
   const altText = await getDailyPuzzleAltText();
   const imageData = await getDailyPuzzleScreenshot();
   const postText = new RichText({ text: getPostText() });
-  await postText.detectFacets(agent)
+  await postText.detectFacets(agent);
 
   console.log("Posting puzzle...");
   console.log(`Alt Text: ${altText}`);
@@ -34,7 +30,7 @@ async function postPuzzleInAM() {
     password: process.env.BLUESKY_PASSWORD!,
   });
 
-  if(!loginResult.success){
+  if (!loginResult.success) {
     console.log("Login failed!");
     return;
   }
@@ -42,7 +38,7 @@ async function postPuzzleInAM() {
   const image = await agent.uploadBlob(imageData, {
     encoding: "image/png",
   });
-  
+
   lastPostUri = await agent.post({
     text: postText.text,
     facets: postText.facets,

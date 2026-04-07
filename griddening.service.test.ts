@@ -112,11 +112,11 @@ Side row: Red (Color), Battle for Zendikar (Set), Power 5
 The board is blank.`,
 };
 
-function cleanup(){
-  if(fs.existsSync("screenshot.png")){
+function cleanup() {
+  if (fs.existsSync("screenshot.png")) {
     fs.unlinkSync("screenshot.png");
   }
-  if(fs.existsSync("dailyPuzzle.png")){
+  if (fs.existsSync("dailyPuzzle.png")) {
     fs.unlinkSync("dailyPuzzle.png");
   }
 }
@@ -125,9 +125,9 @@ describe("GriddeningService", () => {
   beforeAll(() => {
     cleanup();
   });
-  afterAll(() =>{
+  afterAll(() => {
     //cleanup();
-  })
+  });
   describe("getDailyPuzzleScreenshot", () => {
     it("should return a UInt8Array", async () => {
       const screenshot = await getDailyPuzzleScreenshot();
@@ -159,9 +159,7 @@ describe("GriddeningService", () => {
   describe("getDescriptionForConstraint", () => {
     for (const testCase of descriptionForConstraintTestCases) {
       it(`should return the expected string for ${testCase.displayName}`, () => {
-        expect(getDescriptionForConstraint(testCase)).toBe(
-          testCase.expectedText
-        );
+        expect(getDescriptionForConstraint(testCase)).toBe(testCase.expectedText);
       });
     }
   });
